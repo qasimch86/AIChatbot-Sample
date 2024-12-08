@@ -6,7 +6,7 @@ from chatbot.database import save_interaction  # Import from database.py
 app = Flask(__name__)
 
 # Route for the root URL
-@app.route("/", methods=["GET"])
+@app.route("/")
 def home():
     return render_template("index.html")
 
@@ -14,7 +14,7 @@ def home():
 @app.route('/chat', methods=['GET','POST'])
 def chat():
     try:
-        user_input = request.get("What is AdventureWorks?")
+        user_input = request.json.get("What is AdventureWorks?")
         print('Try worked:',user_input)
     except:
         user_input = "What is AdventureWorks?"
