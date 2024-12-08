@@ -1,0 +1,6 @@
+flask
+transformers
+langchain
+sentence-transformers
+chromadb
+faiss-cpu

@@ -1,0 +1,11 @@
+<!-- templates/index.html -->
+<html>
+<body>
+    <h1>AI Chatbot</h1>
+    <form action="/chat" method="POST">
+        <input type="text" name="message" placeholder="Type your question">
+        <button type="submit">Send</button>
+    </form>
+    <div id="response">{{ response }}</div>
+</body>
+</html>
