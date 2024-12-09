@@ -1,18 +1,24 @@
 from click import pause
-from chatbot.embedder import encode_query
 from chatbot.database import query_database
+from chatbot.database import client
+from chatbot.embedder import encode_query
 import chromadb
 
-# Initialize ChromaDB client and collection
-client = chromadb.Client()
-collection = client.get_collection("adventureworks_products")
-
-
-def retrieve_context(user_input):
+def retrieve_context(collection_name,user_input):
     """Retrieve relevant context from the vector database."""
+    try:
+        collection = client.get_collection(collection_name)
+    except chromadb.errors.InvalidCollectionException:
+        collection = client.create_collection(collection_name)
+        print(f"Collection {collection_name} created.")
+
+    # Create query embedding based on user input
     query_embedding = encode_query(user_input)
-    results = query_database(query_embedding)
-    
+
+    # Get results from the database based on user input
+    results = query_database(collection,query_embedding)
+
+    # Check if results are empty
     if is_documents_empty(results):
         context = "No results found."
         print(context)
@@ -27,26 +33,3 @@ def is_documents_empty(results):
         if not results['documents'] or all(not sublist for sublist in results['documents']):
             return True
     return False
-
-
-# def retrieve_context(user_input):
-#     """Retrieve relevant context from the vector database."""
-#     query_embedding = encode_query(user_input)
-#     # print("Query Embedding:", query_embedding)
-#     results = query_database(query_embedding)
-#     # print("Results:", results)  # Add this line to inspect results
-#     # Assuming results is a list of dictionaries, and each dictionary has a "document" key
-#     if is_documents_empty(results):
-#         context = "No results found."
-#         print(context)
-#     else:
-#         context = " ".join([res["document"] for res in results["documents"]])
-#     return context
-
-# def is_documents_empty(results):
-#     # Check if 'documents' key exists and is a list
-#     if 'documents' in results and isinstance(results['documents'], list):
-#         # Check if the list is empty or contains only empty sublists
-#         if not results['documents'] or all(not sublist for sublist in results['documents']):
-#             return True
-#     return False

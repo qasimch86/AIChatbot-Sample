@@ -12,3 +12,6 @@ data/
 
 # Ignore Python cache files
 __pycache__/
+
+# Ignore pip.py file
+get-pip.py
