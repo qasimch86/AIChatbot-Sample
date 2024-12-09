@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify, render_template
 from chatbot.llm.llm import generate_response
 from chatbot.retrieval.retriever import retrieve_context
 
+
 app = Flask(__name__)
 
 # Route for the root URL
