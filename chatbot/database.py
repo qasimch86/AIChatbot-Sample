@@ -3,35 +3,45 @@ import json
 import os
 from datetime import datetime
 import pyodbc
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 
 # Define the connection string
-connection_string = "mssql+pyodbc:/sa:sa@DESKTOP-0AGEURK\SQLEXPRESS\AdventureWorksDW2019?driver=ODBC+Driver+17+for+SQL+Server"
+connection_string = "mssql+pyodbc://sa:sa@DESKTOP-0AGEURK\\SQLEXPRESS/AdventureWorksDW2019?driver=ODBC+Driver+17+for+SQL+Server"
 
 # Replace <username>, <password>, <server>, and <database> with your actual credentials
 # For example:
 # connection_string = "mssql+pyodbc://sa:yourpassword@localhost/AdventureWorks?driver=ODBC+Driver+17+for+SQL+Server"
 
 # Create an engine
-engine = create_engine(connection_string)
+try:
+    engine = create_engine(connection_string)
+    connection = engine.connect()
+    print("Connection successful")
+    connection.close()
+except Exception as e:
+    print("Error:", e)
 
 # Test the connection by running a simple query
 with engine.connect() as connection:
-    result = connection.execute("SELECT TOP 5 * FROM DimProduct")
+    result = connection.execute(text("SELECT TOP 5 * FROM DimProduct"))
     for row in result:
         print(row)
 
 # Code for ChromaDB
-client = chromadb.Client()
-collection = client.get_or_create_collection("knowledge_base")
-def query_database(query_embedding):
+# Initialize ChromaDB client and collection
+client = chromadb.PersistentClient(path="F:\\PythonWork\\AI Chatbot\\data")
+
+def query_database(collection,query_embedding):
     """Query the vector database with an embedding."""
+    # collection = client.get_collection(collection_name)
+    # results = collection.query(query)
+    # query_embedding = encode_query(user_input)
     return collection.query(
         query_embeddings=[query_embedding],
         n_results=3
     )
 
-def add_documents(documents,embeddings):
+def add_documents(collection,documents,embeddings):
     """Add documents to the vector database."""
     for i, doc in enumerate(documents):
         collection.add(
@@ -83,22 +93,22 @@ def get_adventureworks_connection():
     )
     return conn
 
-def fetch_products():
-    """Fetches product data from the AdventureWorks database."""
-    conn = get_adventureworks_connection()
-    cursor = conn.cursor()
-    cursor.execute("SELECT ProductID, Name, ProductNumber, Color FROM Production.Product WHERE Color IS NOT NULL")
+# def fetch_products():
+#     """Fetches product data from the AdventureWorks database."""
+#     conn = get_adventureworks_connection()
+#     cursor = conn.cursor()
+#     cursor.execute("SELECT ProductID, Name, ProductNumber, Color FROM Production.Product WHERE Color IS NOT NULL")
     
-    rows = cursor.fetchall()
-    product_data = []
+#     rows = cursor.fetchall()
+#     product_data = []
     
-    for row in rows:
-        product_data.append({
-            "ProductID": row.ProductID,
-            "Name": row.Name,
-            "ProductNumber": row.ProductNumber,
-            "Color": row.Color
-        })
+#     for row in rows:
+#         product_data.append({
+#             "ProductID": row.ProductID,
+#             "Name": row.Name,
+#             "ProductNumber": row.ProductNumber,
+#             "Color": row.Color
+#         })
     
-    conn.close()
-    return product_data
+#     conn.close()
+#     return product_data

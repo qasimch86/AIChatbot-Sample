@@ -5,8 +5,10 @@ tokenizer = AutoTokenizer.from_pretrained(model_name,token=token)
 model = AutoModelForCausalLM.from_pretrained(model_name,token=token)
 
 # Inference
-def generate_response(user_input,context):
-    input_text = user_input
-    inputs = tokenizer(input_text, return_tensors="pt")
-    outputs = model.generate(**inputs, max_new_tokens=150,num_return_sequences=1)
-    return tokenizer.decode(outputs[0], skip_special_tokens=True)
+def generate_response(user_input, context):
+    """Generate a response based on user input and context."""
+    if context == "No results found.":
+        return "Sorry, I couldn't find any relevant information."
+    else:
+        # Assuming a simple concatenation of user input and context for now
+        return f"Based on the information, here's what I found: {context}"
