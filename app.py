@@ -2,7 +2,6 @@ from flask import Flask, request, jsonify, render_template
 from chatbot.llm.llm import generate_response
 from chatbot.retrieval.retriever import retrieve_context
 
-
 app = Flask(__name__)
 
 # Route for the root URL
@@ -27,7 +26,7 @@ def chat():
     collection_name = get_collection_name_based_on_input(user_input)
 
     # Retrieve context from the vector database
-    context = retrieve_context(collection_name,user_input)
+    context = retrieve_context(user_input)
 
     # Check if context is empty.
     if context is None:
@@ -40,14 +39,24 @@ def chat():
     return jsonify({"response":response})
 
 def get_collection_name_based_on_input(user_input):
-    """Map user input to a corresponding collection name."""
-    # Example mapping (this could be based on keywords, etc.)
-    if "product" in user_input.lower():
+    """Map user input to a corresponding collection name based on keywords."""
+    
+    # Convert input to lowercase for case-insensitive matching
+    user_input_lower = user_input.lower()
+
+    # Define more sophisticated mappings for collection names
+    if "product" in user_input_lower or "item" in user_input_lower:
         return "adventureworks_products"
-    elif "sales" in user_input.lower():
+    elif "sales" in user_input_lower or "revenue" in user_input_lower:
         return "adventureworks_sales"
+    elif "order" in user_input_lower or "purchase" in user_input_lower:
+        return "adventureworks_orders"
+    elif "customer" in user_input_lower or "client" in user_input_lower:
+        return "adventureworks_customers"
+    elif "inventory" in user_input_lower or "stock" in user_input_lower:
+        return "adventureworks_inventory"
     else:
-        return "default_collection"
+        return "default_collection"  # Fallback to default if no match is found
 
 # Serve the favicon
 @app.route("/favicon.ico")
