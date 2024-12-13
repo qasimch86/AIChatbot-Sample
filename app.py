@@ -21,7 +21,7 @@ def chat():
         collection_name = get_collection_name_based_on_input(user_input)
 
         # Load schema (assuming CSV or other schema source)
-        schema = load_schema_from_csv('./data/schema_testdb3.csv')
+        schema = load_schema_from_csv('./data/schema_adventureworks.csv')
 
         # Retrieve context from the vector database
         sql_results = retrieve_context(user_input, schema)

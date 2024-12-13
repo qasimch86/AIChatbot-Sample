@@ -1,6 +1,5 @@
 from chatbot.database.connection import get_mssqlserver_connection
 from sqlalchemy import text
-
 def query_sql_database(query):
     """Query the SQL Server database using SQLAlchemy and return both the column names and rows, including column names as the first row."""
     connection = None
@@ -11,8 +10,9 @@ def query_sql_database(query):
             result = connection.execute(text(query))
             
             # Get column names (the keys of the result set)
-            column_names = result.keys()
-            
+            column_names = list(result.keys())# if hasattr(result, 'keys') else []
+            print(f"Column Names: {column_names}")
+            input('Press Enter to continue...')
             # Fetch all rows of the result set
             rows = result.fetchall()
 

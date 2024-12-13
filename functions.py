@@ -13,7 +13,15 @@ def fill_missing_fields(sql_results):
     if not sql_results:
         return []
 
-    return [(row[0], row[1] if len(row) > 1 and row[1] is not None else 'N/A') for row in sql_results]
+    # Iterate over each row and replace missing values with 'N/A'
+    updated_rows = []
+    for row in sql_results:
+        updated_row = tuple(
+            value if value is not None else 'N/A' for value in row
+        )
+        updated_rows.append(updated_row)
+    
+    return updated_rows
 
 
 # Get the collection name based on the user input

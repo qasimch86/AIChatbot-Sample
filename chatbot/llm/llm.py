@@ -7,11 +7,14 @@ import torch
 # ------------------------------------------------------------------------
 # model_name="Qwen/Qwen2.5-1.5B"
 # token="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"
+# ------------------------------------------------------------------------
+# model_name = "PipableAI/pip-sql-1.3b"
+# token = "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"
 
 ##############################################################################################
 
-def generate_query_LLM(user_input, schema):
-
+def generate_query_llm(user_input, schema):
+    input("Press Enter to continue......")
     # Model and Tokenizer Initialization
     model_name = "PipableAI/pip-sql-1.3b"
     token = "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"
@@ -57,7 +60,8 @@ Output: Write only the SQL query, without explanation or additional text.
         )
     # Decode the output
     sql_query = tokenizer.decode(outputs[0], skip_special_tokens=True)
-   
+    print(f"sql_query: {sql_query}")
+    input("Press Enter to continue...")
     return sql_query
 
 ######################################################################################
