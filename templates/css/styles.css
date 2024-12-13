@@ -1,0 +1,63 @@
+/* Custom styling for the chatbot response or custom text */
+.custom-text {
+    font-size: 1.2em;
+    color: #333;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+}
+
+/* Optional: Add some padding to the entire container */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    padding: 20px;
+}
+
+h1 {
+    font-size: 2.5rem;
+}
+
+/* Flexbox table styling */
+.table-responsive {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-top: 20px;
+}
+
+.row {
+    display: flex;
+    width: 100%;
+}
+
+.header {
+    background-color: #f8f9fa;
+    font-weight: bold;
+}
+
+.cell {
+    flex: 1;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+}
+
+.row:last-child .cell {
+    border-bottom: none;
+}
+
+/* Centering form elements */
+form {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+input.form-control {
+    width: 100%;
+}
+
+button.btn {
+    width: 100%;
+    padding: 10px;
+}

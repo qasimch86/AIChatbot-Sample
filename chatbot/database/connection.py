@@ -3,7 +3,7 @@ from sqlalchemy import create_engine
 import chromadb
 
 # Define the connection string for SQL Server
-connection_string = "mssql+pyodbc://sa:sa@DESKTOP-0AGEURK\\SQLEXPRESS/AdventureWorksDW2019?driver=ODBC+Driver+17+for+SQL+Server"
+connection_string = "mssql+pyodbc://sa:sa@DESKTOP-0AGEURK\\SQLEXPRESS/TestDB3?driver=ODBC+Driver+17+for+SQL+Server"
 
 # Create an engine
 engine = create_engine(connection_string)
