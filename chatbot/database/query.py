@@ -11,8 +11,6 @@ def query_sql_database(query):
             
             # Get column names (the keys of the result set)
             column_names = list(result.keys())# if hasattr(result, 'keys') else []
-            print(f"Column Names: {column_names}")
-            input('Press Enter to continue...')
             # Fetch all rows of the result set
             rows = result.fetchall()
 

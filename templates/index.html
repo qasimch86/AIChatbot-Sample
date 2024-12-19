@@ -11,9 +11,18 @@
 <body>
     <div class="container my-4">
         <h1 class="text-center mb-4">AI Chatbot</h1>
-
+        <a href="{{ url_for('chatui') }}">Go to Chat UI</a>
         <!-- Input Form -->
         <form action="/" method="POST">
+            <!-- Dropdown for choosing LLM provider -->
+            <label for="llm_provider">Choose LLM Provider:</label>
+            <select id="llm_provider" name="llm_provider">
+                <option value="langchain">LangChain: gpt-3.5-turbo</option>
+                <option value="openai">OpenAI: gpt-3.5-turbo</option>
+                <option value="huggingface_direct">Hugging Face Direct: PipableAI/pip-sql-1.3b</option>
+                <option value="huggingface_pipeline">Hugging Face Pipeline: PipableAI/pip-sql-1.3b</option>
+
+            </select><br><br>
             <div class="form-group">
                 <!-- Set value of the input field to retain the previous input -->
                 <input type="text" name="input" class="form-control" id="question" placeholder="Type your question"

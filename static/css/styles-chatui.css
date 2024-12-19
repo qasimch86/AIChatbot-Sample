@@ -1,0 +1,114 @@
+/* General Styling */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+}
+
+.container {
+    display: flex;
+    height: 100vh;
+}
+
+.left-panel {
+    width: 250px;
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    position: fixed;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+.left-panel h3 {
+    margin: 0;
+}
+
+.chat-container {
+    margin-left: 250px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.chat-history {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    max-height: calc(100vh - 120px);
+}
+
+.chat-history .message {
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #f1f1f1;
+    max-width: 60%;
+}
+
+.chat-history .user-message {
+    background-color: #d1e7dd;
+    align-self: flex-start;
+}
+
+.chat-history .bot-message {
+    background-color: #e2e3e5;
+    align-self: flex-end;
+}
+
+.chat-input-container {
+    display: flex;
+    padding: 10px;
+    background-color: #fff;
+    border-top: 1px solid #ddd;
+}
+
+.chat-input-container input {
+    flex: 1;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    margin-right: 10px;
+}
+
+.chat-input-container button {
+    padding: 10px 20px;
+    border-radius: 8px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.chat-input-container button:hover {
+    background-color: #45a049;
+}
+
+.top-right {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+}
+
+.top-right button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.top-right button:hover {
+    background-color: #0056b3;
+}
+.add-new:hover .icon rect {
+    fill: red; /* Changes the fill color to red on hover */
+}
