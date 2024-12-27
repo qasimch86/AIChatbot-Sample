@@ -1,11 +1,78 @@
-<!-- templates/index.html -->
-<html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chatbot</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
 <body>
-    <h1>AI Chatbot</h1>
-    <form action="/chat" method="POST">
-        <input type="text" name="input" placeholder="Type your question">
-        <button type="submit">Send</button>
-    </form>
-    <div id="response">{{ response }}</div>
+    <div class="container my-4">
+        <h1 class="text-center mb-4">AI Chatbot</h1>
+        <a href="{{ url_for('chatui') }}">Go to Chat UI</a>
+        <!-- Input Form -->
+        <form action="/" method="POST">
+            <!-- Dropdown for choosing LLM provider -->
+            <label for="llm_provider">Choose LLM Provider:</label>
+            <select id="llm_provider" name="llm_provider">
+                <option value="langchain">LangChain: gpt-3.5-turbo</option>
+                <option value="openai">OpenAI: gpt-3.5-turbo</option>
+                <option value="huggingface_direct">Hugging Face Direct: PipableAI/pip-sql-1.3b</option>
+                <option value="huggingface_pipeline">Hugging Face Pipeline: PipableAI/pip-sql-1.3b</option>
+
+            </select><br><br>
+            <div class="form-group">
+                <!-- Set value of the input field to retain the previous input -->
+                <input type="text" name="input" class="form-control" id="question" placeholder="Type your question"
+                    value="{{ user_input }}">
+                <small id="emailHelp" class="form-text text-muted">Search from AdventureWorksDW 2019</small>
+            </div>
+            <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="isDescription">
+                <label class="form-check-label" for="isDescription">Need description</label>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+
+        <!-- Display the result (if any) -->
+        <div id="response" class="mt-4">
+            {% if response_llm %}
+            <h3>Response from AI:</h3>
+            <p>{{ response_llm }}</p>
+            {% endif %}
+
+            {% if final_sql_results %}
+            <h3>SQL Results:</h3>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            {% for header in final_sql_results[0] %}
+                            <th>{{ header }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in final_sql_results[1:] %}
+                        <tr>
+                            {% for value in row %}
+                            <td>{{ value }}</td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p>No results found.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
+
 </html>

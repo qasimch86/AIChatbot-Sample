@@ -1,23 +1,14 @@
 import re
 
-def parse_input(user_input):
-    """Parse user input to extract conditions."""
-    # Example: User input might be something like:
-    # "Find products where name contains 'ball' and price is greater than 100"
-
-    # Regex to identify conditions like column=value or column operator value
-    conditions = []
-
-    # Find "column OPERATOR value" patterns in the user input
-    patterns = [
-        r"(\w+)\s*(<=|>=|<|>|=)\s*(['\w\s]+)",  # e.g., Name LIKE 'ball' or Price > 100
-        r"(\w+)\s*LIKE\s*(['\w\s]+)"  # e.g., Name LIKE 'ball'
-    ]
-    
-    for pattern in patterns:
-        matches = re.findall(pattern, user_input)
-        for match in matches:
-            column, operator, value = match
-            conditions.append((column, operator, value.strip("'")))
-
-    return conditions
+def extract_sql_query(input_string):
+    # Regular expression to isolate the SQL query containing SELECT and FROM
+    print(f'input_string: {input_string}')
+    return input_string
+    # pattern = input_string  # Matches 'SELECT', 'FROM', table name, case-insensitively
+    # match = re.search(pattern, input_string)
+    # if match:
+    #     # print(f"This is match: {match}")
+    #     return match.group(1).strip()  # Return the matched SQL query without extra text
+    # else:
+    #     print(f"Invalid Query: {match}")
+    #     return "No valid SQL query found."

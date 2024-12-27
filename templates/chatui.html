@@ -1,0 +1,88 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta http-equiv="x-ua-compatible" content="ie=chrome" />
+  <title>Material Design for Bootstrap</title>
+  <!-- MDB icon -->
+  <link rel="icon" href="static/favicon.ico" type="image/x-icon" />
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css" />
+  <!-- Google Fonts Roboto -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" />
+  <!-- MDB -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='/css/bootstrap-chat.min.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='/css/styles-chatui.css') }}">
+
+</head>
+
+<body>
+  <!-- Start your project here-->
+  <section style="background-color: #eee;">
+    <div class="container py-5">
+
+      <div class="row">
+
+        <div class="col-md-6 col-lg-5 col-xl-4 mb-4 mb-md-0">
+          <div class="card-header d-flex justify-content-between p-3">
+            <h1 class="font-weight-bold mb-0">Chats</h1>
+            <div class="add add-new">
+              <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50">
+                <!-- Vertical bar -->
+                <rect class="vertical" x="22" y="10" width="6" height="30" fill="black" />
+                <!-- Horizontal bar -->
+                <rect class="horizontal" x="10" y="22" width="30" height="6" fill="black" />
+              </svg>
+            </div>
+          </div>
+
+          <div class="card">
+            <div id="chat-tabs-container" class="chat-tabs-container card-body">
+              <ul id="chat-tabs-list" class="chat-tabs-list list-unstyled mb-0">
+                </ul>
+            </div>
+          </div>
+        </div>
+        <div id="chat-container" class="col-md-6 col-lg-7 col-xl-8 chat-form">
+          <ul id="chat-list" class="list-unstyled" value="{{ user_input }}">
+          </ul>
+          <!-- <form action="/" method="POST"> -->
+          <div id="input-box" class="form-outline">
+            <textarea id="user-input" class="form-control" rows="4" placeholder="Type your message here..."></textarea>
+            <label class="form-label" for="textAreaExample2">Message</label>
+          </div>
+          <!-- Checkbox to toggle "Enter to Submit" behavior -->
+          <div class="d-flex justify-content-between p-2 submit-box-button">
+            <!-- <div id="check-box" class="form-checkbox mb-0"> -->
+            <label class="mb-0" for="enter-toggle">
+              <input type="checkbox" id="enter-toggle"> Enable Enter to Submit
+            </label>
+            <!-- </div> -->
+            <div id="form-button" class="add add-new form-button">
+              <button id="send-button" type="button" class="btn btn-info btn-rounded float-end">
+                Send
+              </button>
+            </div>
+            <!-- </form> -->
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+  <!-- End your project here-->
+
+  <!-- MDB -->
+  <script src="{{ url_for('static', filename='js/mdb.min.js') }}"></script>
+  <!-- Custom scripts -->
+  <script type="text/javascript"></script>
+  <script src="./static/js/submit-auto-manual.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <script src="{{ url_for('static', filename='js/chatui.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/chatui-history.js') }}"></script>
+</body>
+
+</html>

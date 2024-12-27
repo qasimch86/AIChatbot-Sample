@@ -15,3 +15,6 @@ __pycache__/
 
 # Ignore pip.py file
 get-pip.py
+
+# Ignore llm.py file
+chatbot/llm/llm.py

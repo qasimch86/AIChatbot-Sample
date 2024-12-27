@@ -1,72 +1,103 @@
-from transformers import AutoModelForCausalLM, AutoTokenizer
-import torch
+from chatbot.llm.llm_huggingface_downloaded import llm_huggingface_downloaded
+from chatbot.llm.llm_huggingface_pipeline import llm_huggingface_pipeline
+from chatbot.llm.llm_langchain import llm_langchain
+from chatbot.llm.llm_openai import llm_openai
 
-# # Model and Tokenizer Initialization
+from chatbot.config import Config
+
+# ------------------------------------------------------------------------
 # model_name = "EleutherAI/gpt-neo-1.3B"
 # token = "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"
-# tokenizer = AutoTokenizer.from_pretrained(model_name, token=token)
-# model = AutoModelForCausalLM.from_pretrained(model_name, token=token)
+# ------------------------------------------------------------------------
+# model_name="Qwen/Qwen2.5-1.5B"
+# token="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"
+# ------------------------------------------------------------------------
+# model_name = "PipableAI/pip-sql-1.3b"
+# token = "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"
 
-###############################################################################################
-# Load model directly
-token2="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"
-model_name="Qwen/Qwen2.5-1.5B"
-tokenizer = AutoTokenizer.from_pretrained(model_name, token = token2)
-model = AutoModelForCausalLM.from_pretrained(model_name, token=token2)
+##############################################################################################
 
+def generate_query_llm(user_input, schema):
 
-# Set pad_token to eos_token if not defined
-if tokenizer.pad_token is None:
-    tokenizer.pad_token = tokenizer.eos_token
-
-def generate_query_LLM(user_input, schema):
     prompt = f"""
-Database Schema:
-{schema}.
-
-User task: "{user_input}"
-
-Output:
-Write only the SQL query, without explanation or additional text.
+Output: Write only the SQL query, without explanation or additional text. Do not create table. Here is the given 
+user task: "{user_input}"
+and
+database schema:{schema}.
 """
+    # print(f'prompt = {prompt}')
+    # input('Press Enter to continue...')
+    sql_query=''
+#######################################huggingface direct##########################################
+    if Config.llm_provider == 'huggingface_direct':
+        model_name='PipableAI/pip-sql-1.3b'#'bigcode/starcoderbase'
+        token='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'   
+        sql_query = llm_huggingface_downloaded(model_name, token, prompt)
+#######################################huggingface pipeline##########################################
+    if Config.llm_provider == 'huggingface_pipeline':
+        model_name='PipableAI/pip-sql-1.3b'#'bigcode/starcoderbase'
+        token='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'
+        sql_query = llm_huggingface_pipeline(model_name, prompt)
 
-    # Tokenize the input prompt with attention_mask
-    inputs = tokenizer(
-        prompt,
-        return_tensors="pt",
-        truncation=True,
-        max_length=512,
-        padding="max_length"  # Ensures consistent input length
-    )
+#######################################langchain############################################
+    elif Config.llm_provider=='langchain':
+        ######################
+        #For Langchain hosted services, we need langchain api_key. Usually we do not need it:
+        #api key = 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
+        ######################
+        model_name='gpt-3.5-turbo'
+        token= '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'
+        sql_query = llm_langchain(model_name, token, prompt)
 
-    # Generate response
-    with torch.no_grad():
-        outputs = model.generate(
-            inputs["input_ids"],
-            attention_mask=inputs["attention_mask"],  # Explicitly provide the attention mask
-            num_return_sequences=1,
-            no_repeat_ngram_size=3,  # Avoid repeated n-grams
-            top_k=10,  # Top-k sampling
-            temperature=0.3,  # Sampling temperature
-            # pad_token_id=tokenizer.eos_token_id,
-            max_new_tokens=150,  # Limit response length
-            do_sample=True
-        )
-    print(f'here are the outputs: {outputs}')
-    # Decode the output
-    sql_query = tokenizer.decode(outputs[0], skip_special_tokens=True)
-    # Clean the SQL query to remove any unwanted information (like schema details)
-    # sql_query = sql_query.split('Generate an SQL query for the following task:')[1]  # Remove the prompt part
-    sql_query = sql_query.strip()
-    # print(f'This is query after LLM tokenizer + split + strip:{sql_query}')
-    
+###########################################openai###########################################
+    elif Config.llm_provider=='OpenAI':
+        model_name='gpt-3.5-turbo'
+        token= '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'   
+        # print(f'Model name = {model_name}\n\n{prompt}')
+        sql_query = llm_openai(model_name, token, prompt)
+
     return sql_query
 
+######################################################################################
+######################################################################################
+######################################################################################
+
 # Inference
-def generate_response(user_input, context):
+def generate_response_llm(user_input, sql_results, schema):
     """Generate a response based on user input and context."""
-    if context == None:
+    if sql_results == None:
         return "Sorry, I couldn't find any relevant information."
-    else:
-        # Assuming a simple concatenation of user input and context for now
-        return f"Based on the information, here's what I found: {context}"
+
+    # prompt = user_input
+    prompt = f"""
+        Please generate a response based on the sql query, user input, and database schema. Do not create table. You must exclude the input and schema from the response.
+        SQL query: {sql_results}
+        User task: "{user_input}",
+        Database Schema: {schema}
+        """
+#######################################huggingface direct##########################################
+    if Config.llm_provider == 'huggingface_downloaded':
+        model_name='bigcode/starcoderbase'
+        # token='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'
+        # Decode the output
+        response_llm = llm_huggingface_downloaded(model_name, token, prompt)
+#######################################huggingface pipeline##########################################
+    if Config.llm_provider == 'huggingface_pipeline':
+        model_name='bigcode/starcoderbase'
+        token='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'
+        response_llm = llm_huggingface_pipeline(model_name, prompt)
+
+#######################################langchain############################################
+    elif Config.llm_provider=='langchain':
+        model_name='gpt-3.5-turbo'
+        token= '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'
+        # Decode the output
+        response_llm = llm_langchain(model_name, token, prompt)
+
+###########################################openai###########################################
+    elif Config.llm_provider=='openai':
+        model_name='gpt-3.5-turbo'
+        token='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'   
+        # Decode the output
+        response_llm = llm_openai(model_name, token, prompt)
+    return response_llm
