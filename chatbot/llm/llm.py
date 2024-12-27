@@ -20,7 +20,7 @@ from chatbot.config import Config
 def generate_query_llm(user_input, schema):
 
     prompt = f"""
-Output: Write only the SQL query, without explanation or additional text. Here is the given 
+Output: Write only the SQL query, without explanation or additional text. Do not create table. Here is the given 
 user task: "{user_input}"
 and
 database schema:{schema}.
@@ -70,7 +70,7 @@ def generate_response_llm(user_input, sql_results, schema):
 
     # prompt = user_input
     prompt = f"""
-        Please generate a response based on the sql query, user input, and database schema. You must exclude the input and schema from the response.
+        Please generate a response based on the sql query, user input, and database schema. Do not create table. You must exclude the input and schema from the response.
         SQL query: {sql_results}
         User task: "{user_input}",
         Database Schema: {schema}

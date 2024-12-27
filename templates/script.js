@@ -29,3 +29,4 @@ function sendMessage() {
 function toggleLogin() {
     alert('Login functionality can be implemented here.');
 }
+
