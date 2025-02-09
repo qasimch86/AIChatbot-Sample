@@ -1,0 +1,9 @@
+table_name,column_name,data_type
+Student,ID,varchar
+Student,First,varchar
+Student,Last,varchar
+COURSE,Code,varchar
+COURSE,Title,varchar
+GRADE,ID,varchar
+GRADE,CODE,varchar
+GRADE,MARK,int

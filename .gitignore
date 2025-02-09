@@ -1,11 +1,5 @@
 # Ignore environment files
-.env
-
-# Ignore virtual environment folder (adjust the name if different)
-chatbot-env/
-
-# Ignore large data files or directories
-data/
+.venv
 
 # Ignore log files
 *.log
@@ -18,3 +12,4 @@ get-pip.py
 
 # Ignore llm.py file
 chatbot/llm/llm.py
+chatbot/database/connection.py
